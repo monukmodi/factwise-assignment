@@ -1,9 +1,9 @@
 import React from 'react'
-
+import Search_user from './components/search_user'
 const App = () => {
   return (
     <div>
-      <h1>Factwise Assignment</h1>
+     <Search_user />
     </div>
   )
 }
