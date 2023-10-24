@@ -7,11 +7,11 @@ const Dialogbox = ({ setPopup, filteredData, remove }) => {
                 <div className='popup_inner'>
                     <div className='popup-box'>
                         <div className='title'>
-                            <p>Are you sure you want to Delete</p>
+                            <p style={{color:"red"}}>Are you sure you want to Delete</p>
                         </div>
                         <div className='dialog_btns'>
-                            <button onClick={() => setPopup(false)}>close</button>
-                            <button onClick={() => remove(filteredData.id)}>Delete</button>
+                            <button style={{color:"white", backgroundColor:"green"}} onClick={() => setPopup(false)}>close</button>
+                            <button style={{color:"white", backgroundColor:"red"}} onClick={() => remove(filteredData.id)}>Delete</button>
                         </div>
                     </div>
                 </div>  

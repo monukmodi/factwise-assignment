@@ -103,7 +103,7 @@
   right: 30%;
   top: 40%;
   bottom: 40%;
-  background: #0bc1cf;
+  background: white;
 }
 
 .popup-box{
@@ -176,3 +176,4 @@
     bottom: 3px;
   }
 }
+

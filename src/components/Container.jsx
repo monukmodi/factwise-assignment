@@ -77,15 +77,15 @@ import { AiFillEdit } from 'react-icons/ai';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import Dialogbox from './Dialogbox';
 
-const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, setBirthYear, dropData }) => {
+const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, setBirthYear, dropData, setEditData }) => {
   const [edit, setEdit] = useState(false);
   const [gender, setGender] = useState(dropData.gender);
   const [country, setCountry] = useState(dropData.country);
   const [desc, setDesc] = useState(dropData.description);
   const [popup, setPopup] = useState(false);
-  const [hasChanged, setHasChanged] = useState(false);
   const [ageError, setAgeError] = useState('');
   const [countryError, setCountryError] = useState('');
+  const [isDataChanged, setIsDataChanged] = useState(false);
 
   const remove = (id) => {
     setCelebData(celebData.filter((elem) => {
@@ -99,11 +99,10 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
     data[0].description = desc;
     data[0].dob = birthYear;
     console.log(data);
-    setHasChanged(false);
+    setIsDataChanged(false); 
   };
 
   const handleInputChange = (event) => {
-    setHasChanged(true);
     const { name, value } = event.target;
 
     if (name === 'birthYear') {
@@ -120,13 +119,15 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
         setCountry(value);
         setCountryError(''); // Clear country error message when valid input
       } else {
-        setCountryError('Country must contain only letters and spaces.'); // Display country validation error
+        setCountryError('Enter Alphabates only'); // Display country validation error
       }
     } else if (name === 'desc') {
       setDesc(value);
     }
+    setIsDataChanged(true);
   };
 
+  
   return (
     <>
       {console.log('dropData', dropData)}
@@ -136,7 +137,7 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
             <>
               <div className='disp_flex' key={all.id}>
                 <div>
-                  Age
+                  <span style={{fontWeight:600}}>Age</span>
                   <a>
                     {edit ? (
                       <>
@@ -154,7 +155,7 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
                   </a>
                 </div>
                 <div>
-                  Gender
+                  <span style={{fontWeight:600}}>Gender</span>
                   <a>
                     {edit ? (
                       <select
@@ -174,7 +175,7 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
                   </a>
                 </div>
                 <div>
-                  Country
+                  <span style={{fontWeight:600}}>Country</span>
                   <a>
                     {edit ? (
                       <>
@@ -193,6 +194,7 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
                 </div>
               </div>
               <div className='desc'>
+                <span style={{fontWeight:600}}>Description</span>
                 <p>
                   {edit ? (
                     <textarea
@@ -209,21 +211,38 @@ const Container = ({ celebData, filteredData, setCelebData, data_id, birthYear, 
               <div className='icons'>
                 <span>
                   {edit ? (
-                    <TiDeleteOutline title='cancel' className='c_ptr' onClick={() => setEdit(false)} />
+                    <TiDeleteOutline title='cancel' className='c_ptr'  onClick={() => {
+                      setEdit(false);
+                      setEditData(false); // Set edit data to true when clicking the edit icon
+                    }} />
                   ) : (
                     <RiDeleteBin6Line title='delete' className='red' onClick={() => setPopup(true)} />
                   )}
                 </span>
                 <span title='edit'>
                   {edit ? (
-                    <MdOutlineDone
-                      onClick={() => { updateData([...data_id]); setEdit(false) }
-                      }
-                      className='round_bd'
-                      disabled={!hasChanged}
-                    />
+                   <MdOutlineDone
+                   onClick={() => {
+                     if (isDataChanged) {
+                       updateData([...data_id]);
+                     }
+                     setEdit(false);
+                     setEditData(false);
+                   }}
+                   className={`round_bd ${isDataChanged ? '' : 'disabled'}`}
+                   style={{
+                     cursor: isDataChanged ? 'pointer' : 'not-allowed',
+                     backgroundColor: isDataChanged ? 'green' : '#dddddd', // Set disabled color to gray
+                     color: isDataChanged ? 'white' : 'gray', // Set disabled text color
+                   }}
+                   // Add other attributes or styles as needed
+                 />
+                  
                   ) : (
-                    <AiFillEdit className='blue' onClick={() => setEdit(true)} />
+                    <AiFillEdit className='blue'  onClick={() => {
+                      setEdit(true);
+                      setEditData(true); // Set edit data to true when clicking the edit icon
+                    }} />
                   )}
                 </span>
               </div>
